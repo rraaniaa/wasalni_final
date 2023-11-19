@@ -32,9 +32,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteParticipation = exports.getParticipationById = exports.createParticipation = exports.getParticipations = void 0;
+exports.deleteParticipation = exports.updateParticipation = exports.getParticipationById = exports.createParticipation = exports.getParticipations = void 0;
 const Participation_1 = __importStar(require("../models/Participation"));
-7;
 // GET - Récupérer toutes les participations
 const getParticipations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,11 +48,11 @@ const getParticipations = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.getParticipations = getParticipations;
 // POST - Créer une nouvelle participation
 const createParticipation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { clientID, nbr_place, luggage } = req.body;
-    if (!clientID || !nbr_place || !luggage) {
-        return res.status(400).json({ message: 'clientID, nbr_place et luggage sont requis' });
+    const { clientID, carpoolingID, etat } = req.body;
+    if (!clientID || !carpoolingID || !etat) {
+        return res.status(400).json({ message: 'clientID, carpoolingID et etat sont requis' });
     }
-    const newParticipation = new Participation_1.default({ clientID, nbr_place, luggage });
+    const newParticipation = new Participation_1.default({ clientID, carpoolingID, etat });
     try {
         const savedParticipation = yield newParticipation.save();
         const participationDTO = (0, Participation_1.mapParticipationToDTO)(savedParticipation);
@@ -66,7 +65,7 @@ const createParticipation = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.createParticipation = createParticipation;
 // GET - Obtenir une participation par ID
 const getParticipationById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const participationId = req.params.id; // L'ID de la participation à récupérer
+    const participationId = req.params.id;
     try {
         const participation = yield Participation_1.default.findById(participationId);
         if (!participation) {
@@ -80,6 +79,26 @@ const getParticipationById = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getParticipationById = getParticipationById;
+// PUT - Mettre à jour une participation par son ID
+const updateParticipation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const participationId = req.params.id;
+    const { clientID, carpoolingID, etat } = req.body;
+    if (!clientID || !carpoolingID || !etat) {
+        return res.status(400).json({ message: 'clientID, carpoolingID et etat sont requis' });
+    }
+    try {
+        const updatedParticipation = yield Participation_1.default.findByIdAndUpdate(participationId, { clientID, carpoolingID, etat }, { new: true });
+        if (!updatedParticipation) {
+            return res.status(404).json({ message: 'Participation non trouvée' });
+        }
+        const participationDTO = (0, Participation_1.mapParticipationToDTO)(updatedParticipation);
+        res.status(200).json(participationDTO);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+exports.updateParticipation = updateParticipation;
 // DELETE - Supprimer une participation par son ID
 const deleteParticipation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const participationId = req.params.id;

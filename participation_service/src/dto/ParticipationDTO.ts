@@ -1,7 +1,8 @@
 // src/dto/ParticipationDTO.ts
 export interface ParticipationDTO {
-    clientID:number ;
-    nbr_place: number;
-    luggage: number;
-  }
-  
+  participationID: number; 
+  clientID: number;
+  carpoolingID: number; 
+  etat: number;
+
+}

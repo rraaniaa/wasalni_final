@@ -8,15 +8,16 @@ exports.mapParticipationToDTO = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const participationSchema = new mongoose_1.default.Schema({
     clientID: { type: Number, required: true },
-    nbr_place: { type: Number, required: true },
-    luggage: { type: Number, required: true },
+    carpoolingID: { type: Number, required: true },
+    etat: { type: Number, default: 1 },
 });
 const Participation = mongoose_1.default.model('Participation', participationSchema);
 const mapParticipationToDTO = (participation) => {
     return {
+        participationID: participation._id,
         clientID: participation.clientID,
-        nbr_place: participation.nbr_place,
-        luggage: participation.luggage,
+        carpoolingID: participation.carpoolingID,
+        etat: participation.etat || 1,
     };
 };
 exports.mapParticipationToDTO = mapParticipationToDTO;

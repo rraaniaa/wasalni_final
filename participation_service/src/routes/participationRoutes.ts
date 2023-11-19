@@ -9,9 +9,10 @@ import {
 
 const router = express.Router();
 
-router.get('/driver/participations', getParticipations);
-router.post('/driver/participations', createParticipation);
-router.delete('/driver/participations/:id', deleteParticipation);
-router.get('/driver/participations/:id', getParticipationById);
+router.get('/participations', getParticipations);
+router.post('/participations', createParticipation);
+router.delete('/participations/:id', deleteParticipation);
+router.get('/participations/:id', getParticipationById);
+
 
 export default router;

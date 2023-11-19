@@ -6,7 +6,8 @@ spring:
           uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/driver/**
-
+          filters:
+            - AuthenticationFilter
 
         - id: participation-service
           uri: lb://PARTICIPATION-SERVICE
